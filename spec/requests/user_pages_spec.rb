@@ -46,22 +46,14 @@ describe "User pages" do
           end.to change(User, :count).by(-1)
         end
         it { should_not have_link('delete', href: user_path(admin)) }
-      end
 
-      describe "as an admin user with no capybara" do
-        let(:admin) { FactoryGirl.create(:admin) }
-        before do
+        it "should not be able to delete oneself" do
           sign_in admin, no_capybara: true
-        end
-
-        it "shoud not be able to delete oneself" do
           expect do
             delete user_path(admin)
           end.to change(User, :count).by(0)
         end
       end
-
-
 
     end
   end
