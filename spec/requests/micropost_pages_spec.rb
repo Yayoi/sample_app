@@ -41,4 +41,17 @@ describe "MicropostPages" do
       end
     end
   end
+
+  describe "delete links" do
+    let!(:my_post) { FactoryGirl.create(:micropost, user: user) }
+    let!(:others_post) { FactoryGirl.create(:micropost, user: FactoryGirl.create(:user)) }
+    before do
+      sign_in user
+      visit root_path
+    end
+
+    it { should have_link('delete', href: micropost_path(my_post)) }
+    it { should_not have_link('delete', href: micropost_path(others_post)) }
+  end
+
 end

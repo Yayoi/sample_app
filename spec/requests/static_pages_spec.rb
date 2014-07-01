@@ -31,6 +31,19 @@ describe "Static pages" do
           expect(page).to have_selector("li##{item.id}", text: item.content)
         end
       end
+
+      it { should have_content("#{user.feed.count} microposts") }
+
+      describe "feed have only one micropost" do
+        before do
+          user.feed.delete_all
+          FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
+          visit root_path
+        end
+        it { should have_content("1 micropost") }
+        it { should_not have_content("1 microposts") }
+      end
+
     end
   end
   
